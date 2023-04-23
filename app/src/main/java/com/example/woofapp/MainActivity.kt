@@ -81,6 +81,52 @@ fun WoofApp() {
     }
 }
 
+
+@Composable
+fun DogItem(dog: Dog) {
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = Modifier.padding(8.dp), elevation = 5.dp) {
+        Column(
+            modifier = Modifier
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                DogIcon(dog.imageResourceId)
+                DogInformation(dogName = dog.name, dogAge = dog.age)
+                Spacer(Modifier.weight(1f))
+                DogItemButton(expanded = expanded) { expanded = !expanded }
+            }
+            if (expanded) {
+                DogHobby(dog.hobbies)
+            }
+        }
+    }
+}
+
+@Composable
+fun DogIcon(
+    @DrawableRes dogIcon: Int,
+) {
+    Image(
+        painterResource(dogIcon),
+        contentDescription = null,
+        modifier = Modifier
+            .size(64.dp)
+            .padding(8.dp)
+            .clip(RoundedCornerShape(50)),
+        contentScale = ContentScale.Crop
+    )
+}
+
 @Composable
 private fun DogItemButton(
     expanded: Boolean,
@@ -115,47 +161,6 @@ fun WoofTopAppBar() {
             style = MaterialTheme.typography.h1
         )
     }
-}
-
-@Composable
-fun DogItem(dog: Dog) {
-    var expanded by remember { mutableStateOf(false) }
-    Card(modifier = Modifier.padding(8.dp), elevation = 5.dp) {
-        Column(modifier = Modifier
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                ))) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                DogIcon(dog.imageResourceId)
-                DogInformation(dogName = dog.name, dogAge = dog.age)
-                Spacer(Modifier.weight(1f))
-                DogItemButton(expanded = expanded) { expanded = !expanded }
-            }
-            if (expanded) {
-                DogHobby(dog.hobbies)
-            }
-        }
-    }
-}
-
-@Composable
-fun DogIcon(
-    @DrawableRes dogIcon: Int,
-) {
-    Image(
-        painterResource(dogIcon), contentDescription = null,
-        modifier = Modifier
-            .size(64.dp)
-            .padding(8.dp)
-            .clip(RoundedCornerShape(50)),
-        contentScale = ContentScale.Crop
-    )
 }
 
 
